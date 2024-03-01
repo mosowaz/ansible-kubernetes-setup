@@ -1,9 +1,12 @@
 - hosts: all
   tasks:
-
+  
     - name: Remove swap from "/etc/fstab"
       lineinfile:
         path: /etc/fstab
         regexp: /swap.imp*
         state: absent
-        backup: true
+        backup: yes
+      
+    - name: Run swappoff command on hosts
+      command: swapoff -a
