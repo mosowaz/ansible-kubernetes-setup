@@ -16,3 +16,6 @@ Remove swap from Master and Worker nodes
     - name: Run swappoff command on hosts
       command: swapoff -a
 ```  
+## Step 2
+Run the playbook for installing kubeadm, kubectl, and kubelet 
+` ansible-playbook kube-pkg-installs.yml -i inventory.yml ` 
