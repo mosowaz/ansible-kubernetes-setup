@@ -11,5 +11,8 @@ Remove swap from Master and Worker nodes
         path: /etc/fstab
         regexp: /swap.imp*
         state: absent
-        backup: true
+        backup: yes
+      
+    - name: Run swappoff command on hosts
+      command: swapoff -a
 ```  
