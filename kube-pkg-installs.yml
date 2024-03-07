@@ -2,6 +2,10 @@
   gather_facts: false
   tasks:
 
+    - name: Update apt repo
+      apt:
+        update_cache: yes
+        
     - name: Update apt repository and distribution,and install packages
       apt:
         name: "{{ item }}"
