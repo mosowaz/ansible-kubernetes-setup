@@ -20,7 +20,7 @@ Confirm that swap is removed by running ad-hoc command
 
 ` ansible all -m command -a "free -h" `
 
-## Step 3
+## Step 2
 Run the playbook for installing kubeadm, kubectl, and kubelet
 
 ` ansible-playbook kube-pkg-installs.yml -i inventory.yml ` 
