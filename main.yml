@@ -1,0 +1,3 @@
+- import_playbook: remove-swap.yml
+
+- import_playbook: kube-pkg-installs.yml
