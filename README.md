@@ -1,5 +1,11 @@
 # ansible-kubernetes-setup
 
+For complete plays, run the main.yml playbook
+```
+ansible-playbook main.yml -i inventory.yml
+```
+
+For individual play, follow instructions below
 ## Step 1
 Remove swap from Master and Worker nodes
 ```
