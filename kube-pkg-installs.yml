@@ -1,7 +1,8 @@
 - hosts: all
+  gather_facts: false
   tasks:
 
-    - name: Update apt repository and distribution,and install packages  
+    - name: Update apt repository and distribution,and install packages
       apt:
         name: "{{ item }}"
         state: latest
@@ -12,9 +13,24 @@
           - curl
           - gpg
 
+    - name: Creating k8s apt source list file and keyring file
+      file:
+        path: "{{ item }}"
+        state: touch
+        mode: '0644'
+        owner: root
+      loop:
+        - /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+        - /etc/apt/sources.list.d/kubernetes.list
+
+    - name: Download Public signing Key for K8s repositories
+      shell: |
+        curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --batch --no-tty --yes --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+        echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
     - name: Install kubelet, kubeadm and kubectl, and pin their version
       apt:
-        pkg: 
+        pkg:
           - kubelet
           - kubeadm
           - kubectl
@@ -27,4 +43,4 @@
       loop:
         - kubelet
         - kubeadm
-        - kubectl 
+        - kubectl
