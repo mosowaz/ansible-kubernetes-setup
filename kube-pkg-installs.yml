@@ -2,15 +2,14 @@
   gather_facts: false
   tasks:
 
-    - name: Update apt repo
+    - name: Update apt repository 
       apt:
         update_cache: yes
         
-    - name: Update apt repository and distribution,and install packages
+    - name: Install pre-requisite softwares 
       apt:
         name: "{{ item }}"
         state: latest
-        update_cache: yes
       loop:
           - apt-transport-https
           - ca-certificates
