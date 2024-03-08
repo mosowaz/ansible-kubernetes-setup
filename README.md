@@ -5,7 +5,7 @@ For complete plays, run the main.yml playbook
 ansible-playbook main.yml -i inventory.yml
 ```
 
-For individual play, follow instructions below
+For individual play, each step is listed below. 
 ## Step 1
 Remove swap from Master and Worker nodes
 ```
