@@ -2,14 +2,11 @@
   gather_facts: false
   tasks:
 
-    - name: Update apt repository 
-      apt:
-        update_cache: yes
-        
-    - name: Install pre-requisite softwares 
+    - name: Install software packages
       apt:
         name: "{{ item }}"
         state: latest
+        update_cache: yes
       loop:
           - apt-transport-https
           - ca-certificates
@@ -31,13 +28,15 @@
         curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --batch --no-tty --yes --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
         echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
-    - name: Install kubelet, kubeadm and kubectl, and pin their version
+    - name: Install kubelet, kubeadm and kubectl
       apt:
-        pkg:
-          - kubelet
-          - kubeadm
-          - kubectl
+        name: "{{ item }}"
         state: present
+        update_cache: yes
+      loop:
+        - kubelet
+        - kubeadm
+        - kubectl
 
     - name: Prevent Kubernetes packages from being upgraded
       dpkg_selections:
