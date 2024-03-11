@@ -60,14 +60,19 @@
       ansible.builtin.debug:
         var: network
 
-    - name: Containerd and Container Network Interface installation
+    - name: Containerd installation
       apt:
-        name: "{{ item }}" 
+        name: containerd
         update_cache: yes
         state: latest
-      loop:
-        - containerd
-        - kubernetes-cni
+
+    - name: Install Container Network Interface (cni)
+      shell: |
+        curl -L -o $HOME/cni-plugins-linux-amd64-v1.4.0.tgz \
+        https://github.com/containernetworking/plugins/releases/download/v1.4.0/cni-plugins-linux-amd64-v1.4.0.tgz
+
+        mkdir -p /opt/cni/bin
+        tar Cxzvf /opt/cni/bin $HOME/cni-plugins-linux-amd64-v1.4.0.tgz
  
     - name: Enable CRI support for containerd in its systemd unit file 
       lineinfile:
