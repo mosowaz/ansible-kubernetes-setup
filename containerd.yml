@@ -30,8 +30,11 @@
         # To use the systemd cgroup driver in /etc/containerd/config.toml with runc
         cat <<EOF | sudo tee /etc/containerd/config.toml
         [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-          ...
+          privileged_without_host_devices = false
+          runtime_type = "io.containerd.runc.v2"
+
           [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+            BinaryName = "/usr/bin/runc"
             SystemdCgroup = true
         EOF
 
