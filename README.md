@@ -27,6 +27,12 @@ Confirm that swap is removed by running ad-hoc command
 ` ansible all -m command -a "free -h" `
 
 ## Step 2
+Run containerd.yml playbook to setup config files and create required files for network bridge, 
+and modules (br_netfilter and overlay). Also install the Container Network Interface software (kubernetes-cni)
+
+` ansible-playbook containerd.yml -i inventory.yml ` 
+
+## Step 3
 Run the playbook for installing kubeadm, kubectl, and kubelet
 
 ` ansible-playbook kube-pkg-installs.yml -i inventory.yml ` 
