@@ -1,5 +1,5 @@
 # ansible-kubernetes-setup
-The purpose of this project is to demonstrate the setup of kubernetes cluster, and using bind9 dns server with LDAP server to manage the cluster.
+The purpose of this project is to demonstrate the setup of kubernetes cluster.
 There will be High Availabilty incorperated into the cluster (2 master nodes and 2 worker nodes).
 
 For complete kubernetes cluster playbook, run the main.yml
@@ -63,4 +63,28 @@ validate that all nodes and pods are healthy
 `$ kubectl get nodes`
 `$ kubectl get all -A`
 
+To start using your cluster, you need to run the following as a regular user on the control-plane nodes
+```
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+----------------------------------------------------------------------------------------
+## Cleanup Phase
+```
+sudo rm -rf /var/lib/etcd
+sudo kill -9 $(ps aux | grep -v grep | grep "containerd.sock" | awk -F" " '{print $2}')
+sudo kubeadm reset phase cleanup-node
+```
+Confirm there are no running containers by running this command
+
+`$ ps aux | grep -v grep | grep "containerd.sock" | awk -F" " '{print $2}'`
+
+# Troubleshooting errors on kubelet and containerd
+```
+$ journalctl -xeu kubelet
+$ crictl --runtime-endpoint unix:///var/run/containerd/containerd.sock ps -a | grep kube | grep -v pause
+$ crictl --runtime-endpoint unix:///var/run/containerd/containerd.sock logs CONTAINER_ID
+```
 
